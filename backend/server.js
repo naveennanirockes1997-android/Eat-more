@@ -23,6 +23,7 @@ dns.setServers(['8.8.8.8', '8.8.4.4']); // Use Google DNS
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 const allowedOrigins = [
   "http://localhost:5173",
