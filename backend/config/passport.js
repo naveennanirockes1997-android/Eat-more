@@ -8,7 +8,7 @@ dotenv.config();
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID.trim() : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET.trim() : '',
-    callbackURL: "/auth/google/callback",
+    callbackURL: "https://eat-more-backend-jpjz.onrender.com/auth/google/callback",
     proxy: true
   },
   async (accessToken, refreshToken, profile, cb) => {
