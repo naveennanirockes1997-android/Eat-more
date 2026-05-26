@@ -118,3 +118,89 @@ button {
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS FOR ADMIN PANEL
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .admin-navbar-container {
+    width: 95% !important;
+    padding: 12px 24px !important;
+    top: 10px !important;
+  }
+}
+
+@media (max-width: 960px) {
+  /* Stack the main dashboard container vertically */
+  .admin-layout-container {
+    flex-direction: column !important;
+    padding-top: 100px !important;
+  }
+  
+  /* Convert sticky sidebar to a beautiful top scrollable navigation tab list */
+  .admin-sidebar {
+    width: auto !important;
+    margin: 10px 20px !important;
+    position: static !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    gap: 15px !important;
+    padding: 15px !important;
+    scrollbar-width: none; /* Hide scrollbar for clean premium tab look */
+  }
+  .admin-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .admin-sidebar > div:first-child {
+    display: none !important; /* Hide 'Admin Center' title on mobile */
+  }
+  
+  .admin-sidebar > button {
+    margin-top: 0 !important; /* Remove auto top margin from refresh stats button */
+    flex-shrink: 0;
+  }
+  
+  .admin-sidebar > div:nth-child(2) {
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+  
+  .admin-sidebar button {
+    padding: 10px 16px !important;
+  }
+  
+  /* Main Panel Padding Adjustment */
+  .admin-main-panel {
+    padding: 20px !important;
+  }
+  
+  /* Metrics Grid columns */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .metrics-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .admin-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  
+  /* Hide user profile active name text in navbar to avoid crowding */
+  .admin-nav-identity {
+    display: none !important;
+  }
+  
+  .admin-navbar-container {
+    padding: 12px 16px !important;
+  }
+}
+

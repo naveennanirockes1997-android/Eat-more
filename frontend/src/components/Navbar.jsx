@@ -84,7 +84,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="glass" style={{
+      <nav className="glass navbar-container" style={{
         position: 'fixed',
         top: '20px',
         left: '50%',
@@ -113,7 +113,7 @@ const Navbar = () => {
           <h2 style={{ fontSize: '24px', margin: 0, color: 'white' }}>Eat<span style={{ color: 'var(--primary)' }}>More</span></h2>
         </Link>
 
-        <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
+        <div className="navbar-links" style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
           <Link to="/" style={{ fontWeight: '500', textDecoration: 'none' }}>Menu</Link>
           <Link to="/checkout" style={{ fontWeight: '500', textDecoration: 'none' }}>Checkout</Link>
           {userInfo?.role === 'admin' && (
@@ -121,8 +121,8 @@ const Navbar = () => {
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <div ref={searchRef} style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative' }}>
+        <div className="navbar-actions" style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          <div className="navbar-search" ref={searchRef} style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative' }}>
             <input
               type="text"
               placeholder="Search menu..."
@@ -200,19 +200,19 @@ const Navbar = () => {
           </div>
           
           {userInfo ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="navbar-user-profile" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               <div 
                 onClick={() => setIsProfileOpen(true)}
                 className="glass" 
                 style={{ padding: '8px 16px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', border: '1px solid var(--primary-glow)' }}
               >
                 <User size={16} />
-                <span style={{ fontSize: '13px', fontWeight: '600' }}>{userInfo.name.split(' ')[0]}</span>
+                <span className="navbar-user-name" style={{ fontSize: '13px', fontWeight: '600' }}>{userInfo.name.split(' ')[0]}</span>
               </div>
               
               <div 
                 onClick={() => setIsOrdersOpen(true)}
-                className="glass" 
+                className="glass navbar-orders-btn" 
                 style={{ padding: '8px 14px', borderRadius: '12px', cursor: 'pointer', fontSize: '13px', fontWeight: '600' }}
               >
                 Orders
@@ -220,7 +220,7 @@ const Navbar = () => {
 
               <div 
                 onClick={handleLogout} 
-                className="glass" 
+                className="glass navbar-logout-btn" 
                 style={{ 
                   padding: '8px 14px', 
                   borderRadius: '12px', 

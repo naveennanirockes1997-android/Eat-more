@@ -475,7 +475,7 @@ const App = () => {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--background)' }}>
       {/* Premium Top Navigation Bar */}
-      <nav className="glass" style={{
+      <nav className="glass admin-navbar-container" style={{
         position: 'fixed',
         top: '20px',
         left: '50%',
@@ -510,7 +510,7 @@ const App = () => {
 
         {/* Right Side Identity & Action */}
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <div className="glass" style={{ padding: '8px 18px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600' }}>
+          <div className="glass admin-nav-identity" style={{ padding: '8px 18px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '600' }}>
             <Sparkles size={14} color="var(--primary)" />
             <span>Active Admin: {userInfo.name}</span>
           </div>

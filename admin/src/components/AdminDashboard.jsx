@@ -377,10 +377,10 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--background)', color: 'var(--text)', paddingTop: '100px' }}>
+    <div className="admin-layout-container" style={{ display: 'flex', minHeight: '100vh', background: 'var(--background)', color: 'var(--text)', paddingTop: '100px' }}>
       
       {/* 1. Left Sidebar navigation */}
-      <div className="glass" style={{ width: '260px', margin: '20px', borderRadius: '24px', padding: '30px 20px', display: 'flex', flexDirection: 'column', gap: '30px', position: 'sticky', top: '120px', height: 'fit-content' }}>
+      <div className="glass admin-sidebar" style={{ width: '260px', margin: '20px', borderRadius: '24px', padding: '30px 20px', display: 'flex', flexDirection: 'column', gap: '30px', position: 'sticky', top: '120px', height: 'fit-content' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--primary)' }}>
           <Sparkles size={24} />
           <h2 style={{ fontSize: '18px', fontWeight: 'bold' }}>Admin Center</h2>
@@ -437,7 +437,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* 2. Main Dashboard Panel */}
-      <div style={{ flex: 1, padding: '20px 40px 40px 20px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+      <div className="admin-main-panel" style={{ flex: 1, padding: '20px 40px 40px 20px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
         
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh', flexDirection: 'column', gap: '16px' }}>
@@ -447,7 +447,7 @@ const AdminDashboard = () => {
         ) : (
           <div>
             {/* Header */}
-            <header style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <header className="admin-header" style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>
                   Admin <span className="text-gradient">Control Panel</span>
@@ -474,7 +474,7 @@ const AdminDashboard = () => {
                 {activeTab === 'overview' && (
                   <div>
                     {/* Metrics Grid */}
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '40px' }}>
+                    <div className="metrics-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', marginBottom: '40px' }}>
                       {dynamicMetrics().map((stat, i) => (
                         <div key={stat.title} className="glass" style={{ padding: '24px', display: 'flex', alignItems: 'center', gap: '20px' }}>
                           <div style={{ background: `${stat.color}20`, padding: '14px', borderRadius: '16px', color: stat.color }}>
