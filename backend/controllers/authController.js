@@ -8,13 +8,20 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(Date.now() + (process.env.JWT_COOKIE_EXPIRES_IN || 90) * 24 * 60 * 60 * 1000),
     httpOnly: true,
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  
+  const host = req.headers.host || '';
+  const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+
+  if (process.env.NODE_ENV === 'production' || !isLocalhost) {
+    cookieOptions.secure = true;
+    cookieOptions.sameSite = 'none';
+  }
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -39,7 +46,7 @@ export const signup = async (req, res) => {
       role: req.body.role || 'customer'
     });
 
-    createSendToken(newUser, 201, res);
+    createSendToken(newUser, 201, req, res);
   } catch (err) {
     console.error('Signup Error:', err);
     res.status(400).json({
@@ -66,7 +73,7 @@ export const login = async (req, res) => {
     }
 
     // 3) If everything ok, send token to client
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   } catch (err) {
     console.error('Login Error:', err);
     res.status(400).json({ status: 'fail', message: err.message });
@@ -267,7 +274,7 @@ export const resetPassword = async (req, res) => {
     user.passwordResetExpires = undefined;
     await user.save();
 
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -329,7 +336,7 @@ export const updateMyPassword = async (req, res) => {
     user.password = req.body.newPassword;
     await user.save();
 
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   } catch (err) {
     res.status(400).json({
       status: 'fail',
@@ -345,7 +352,9 @@ export const googleOAuthSuccess = (req, res) => {
       expires: new Date(Date.now() + (process.env.JWT_COOKIE_EXPIRES_IN || 90) * 24 * 60 * 60 * 1000),
       httpOnly: true,
     };
-    if (process.env.NODE_ENV === 'production') {
+    const host = req.headers.host || '';
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+    if (process.env.NODE_ENV === 'production' || !isLocalhost) {
       cookieOptions.secure = true;
       cookieOptions.sameSite = 'none';
     }
