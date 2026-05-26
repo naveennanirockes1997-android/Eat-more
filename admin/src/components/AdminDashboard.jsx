@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { API_BASE_URL } from '../config';
 import { userActions } from '../store/slices/userSlice';
 
 const AdminDashboard = () => {
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
     setProfileSaving(true);
     try {
       const res = await axios.patch(
-        'http://localhost:5000/api/v1/users/updateMe',
+        `${API_BASE_URL}/api/v1/users/updateMe`,
         { name: adminName, email: adminEmail },
         { withCredentials: true }
       );
@@ -57,7 +58,7 @@ const AdminDashboard = () => {
     setProfileSaving(true);
     try {
       const res = await axios.patch(
-        'http://localhost:5000/api/v1/users/updateMyPassword',
+        `${API_BASE_URL}/api/v1/users/updateMyPassword`,
         { currentPassword: adminCurrentPassword, newPassword: adminNewPassword },
         { withCredentials: true }
       );
@@ -118,11 +119,11 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const [ordersRes, menuRes, usersRes, settingsRes, messagesRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/v1/orders', { withCredentials: true }),
-        axios.get('http://localhost:5000/api/v1/menu', { withCredentials: true }),
-        axios.get('http://localhost:5000/api/v1/users', { withCredentials: true }),
-        axios.get('http://localhost:5000/api/v1/settings'),
-        axios.get('http://localhost:5000/api/v1/messages', { withCredentials: true })
+        axios.get(`${API_BASE_URL}/api/v1/orders`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/v1/menu`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/v1/users`, { withCredentials: true }),
+        axios.get(`${API_BASE_URL}/api/v1/settings`),
+        axios.get(`${API_BASE_URL}/api/v1/messages`, { withCredentials: true })
       ]);
 
       setOrders(ordersRes.data.data || []);
@@ -142,7 +143,7 @@ const AdminDashboard = () => {
     fetchDashboardData();
 
     // Setup Socket.io client for real-time events
-    const socket = io('http://localhost:5000', {
+    const socket = io(API_BASE_URL, {
       withCredentials: true
     });
 
@@ -203,7 +204,7 @@ const AdminDashboard = () => {
   // --- User Operations ---
   const handleUserRoleChange = async (userId, newRole) => {
     try {
-      const res = await axios.patch(`http://localhost:5000/api/v1/users/${userId}/role`, { role: newRole }, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/users/${userId}/role`, { role: newRole }, { withCredentials: true });
       if (res.data.status === 'success') {
         setUsers(prev => prev.map(u => u._id === userId ? { ...u, role: newRole } : u));
         showToast('User role updated successfully!');
@@ -217,7 +218,7 @@ const AdminDashboard = () => {
   const handleUserDelete = async (userId) => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/v1/users/${userId}`, { withCredentials: true });
+      await axios.delete(`${API_BASE_URL}/api/v1/users/${userId}`, { withCredentials: true });
       setUsers(prev => prev.filter(u => u._id !== userId));
       showToast('User deleted successfully.');
     } catch (err) {
@@ -229,7 +230,7 @@ const AdminDashboard = () => {
   // --- Order Operations ---
   const handleOrderStatusChange = async (orderId, newStatus) => {
     try {
-      const res = await axios.patch(`http://localhost:5000/api/v1/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/orders/${orderId}/status`, { status: newStatus }, { withCredentials: true });
       if (res.data.status === 'success') {
         setOrders(prev => prev.map(o => o._id === orderId ? { ...o, orderStatus: newStatus } : o));
         showToast(`Order status updated to ${newStatus}`);
@@ -244,7 +245,7 @@ const AdminDashboard = () => {
   const handleOrderDelete = async (orderId) => {
     if (!window.confirm('Delete this order log permanently?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/v1/orders/${orderId}`, { withCredentials: true });
+      await axios.delete(`${API_BASE_URL}/api/v1/orders/${orderId}`, { withCredentials: true });
       setOrders(prev => prev.filter(o => o._id !== orderId));
       showToast('Order log deleted.');
     } catch (err) {
@@ -285,13 +286,13 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       if (modalType === 'create') {
-        const res = await axios.post('http://localhost:5000/api/v1/menu', formData, { withCredentials: true });
+        const res = await axios.post(`${API_BASE_URL}/api/v1/menu`, formData, { withCredentials: true });
         if (res.data.status === 'success') {
           setMenuItems(prev => [res.data.data.item, ...prev]);
           showToast('New menu item created!');
         }
       } else {
-        const res = await axios.patch(`http://localhost:5000/api/v1/menu/${currentItem.itemID}`, formData, { withCredentials: true });
+        const res = await axios.patch(`${API_BASE_URL}/api/v1/menu/${currentItem.itemID}`, formData, { withCredentials: true });
         if (res.data.status === 'success') {
           setMenuItems(prev => prev.map(item => item.itemID === currentItem.itemID ? res.data.data.item : item));
           showToast('Menu item updated successfully!');
@@ -307,7 +308,7 @@ const AdminDashboard = () => {
   const handleToggleAvailability = async (item) => {
     try {
       const updatedValue = !item.isAvailable;
-      const res = await axios.patch(`http://localhost:5000/api/v1/menu/${item.itemID}`, { isAvailable: updatedValue }, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/menu/${item.itemID}`, { isAvailable: updatedValue }, { withCredentials: true });
       if (res.data.status === 'success') {
         setMenuItems(prev => prev.map(m => m.itemID === item.itemID ? res.data.data.item : m));
         showToast(`Item is now ${updatedValue ? 'Available' : 'Unavailable'}`);
@@ -321,7 +322,7 @@ const AdminDashboard = () => {
   const handleMenuDelete = async (itemId) => {
     if (!window.confirm('Are you sure you want to delete this menu item?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/v1/menu/${itemId}`, { withCredentials: true });
+      await axios.delete(`${API_BASE_URL}/api/v1/menu/${itemId}`, { withCredentials: true });
       setMenuItems(prev => prev.filter(m => m.itemID !== itemId));
       showToast('Menu item deleted.');
     } catch (err) {
@@ -333,7 +334,7 @@ const AdminDashboard = () => {
   const handleSettingsSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.patch('http://localhost:5000/api/v1/settings', siteSettings, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/settings`, siteSettings, { withCredentials: true });
       if (res.data.status === 'success') {
         setSiteSettings(res.data.data);
         showToast('Site settings updated successfully!');
@@ -346,7 +347,7 @@ const AdminDashboard = () => {
 
   const handleMarkAsRead = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/v1/messages/${id}`, { isRead: true }, { withCredentials: true });
+      await axios.patch(`${API_BASE_URL}/api/v1/messages/${id}`, { isRead: true }, { withCredentials: true });
       setMessages(messages.map(m => m._id === id ? { ...m, isRead: true } : m));
     } catch (err) {
       console.error('Failed to mark read', err);
@@ -356,7 +357,7 @@ const AdminDashboard = () => {
   const handleDeleteMessage = async (id) => {
     if (!window.confirm('Are you sure you want to delete this review?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/v1/messages/${id}`, { withCredentials: true });
+      await axios.delete(`${API_BASE_URL}/api/v1/messages/${id}`, { withCredentials: true });
       setMessages(messages.filter(m => m._id !== id));
       showToast('Review deleted successfully.');
     } catch (err) {
@@ -366,7 +367,7 @@ const AdminDashboard = () => {
 
   const handleEditMessage = async (id) => {
     try {
-      const res = await axios.patch(`http://localhost:5000/api/v1/messages/${id}`, { message: editMessageText }, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/messages/${id}`, { message: editMessageText }, { withCredentials: true });
       setMessages(messages.map(m => m._id === id ? res.data.data : m));
       setEditingMessageId(null);
       showToast('Review updated successfully!');

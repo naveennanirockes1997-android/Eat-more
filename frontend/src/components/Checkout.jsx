@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CreditCard, Truck, ShieldCheck, ArrowRight, CheckCircle, Loader, AlertCircle, Calendar, Clock } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { cartActions } from '../store/slices/cartSlice';
 
 const Checkout = () => {
@@ -83,7 +84,7 @@ const Checkout = () => {
       // 1. Process mock gateway payments in backend APIs
       if (paymentType === 'Stripe') {
         const stripeRes = await axios.post(
-          'http://localhost:5000/api/v1/payment/process-stripe',
+          `${API_BASE_URL}/api/v1/payment/process-stripe`,
           {
             amount: finalAmount,
             paymentMethodId: 'pm_card_visa',
@@ -98,7 +99,7 @@ const Checkout = () => {
         paymentSuccessData = stripeRes.data.paymentIntent;
       } else {
         const paypalRes = await axios.post(
-          'http://localhost:5000/api/v1/payment/process-paypal',
+          `${API_BASE_URL}/api/v1/payment/process-paypal`,
           {
             amount: finalAmount,
             paypalOrderId: paypalOrderId
@@ -131,7 +132,7 @@ const Checkout = () => {
         scheduledTime: isScheduled ? scheduledTime : null
       };
 
-      const response = await axios.post('http://localhost:5000/api/v1/orders', payload, {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/orders`, payload, {
         withCredentials: true
       });
 

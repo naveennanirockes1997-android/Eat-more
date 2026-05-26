@@ -10,6 +10,8 @@ import AboutAndContact from './components/AboutAndContact';
 import PromoCarousel from './components/PromoCarousel';
 import Footer from './components/Footer';
 
+import { API_BASE_URL } from './config';
+
 const Checkout = lazy(() => import('./components/Checkout'));
 
 const PageLoader = () => (
@@ -41,7 +43,7 @@ function App() {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/v1/users/me', {
+        const response = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
           withCredentials: true
         });
         if (response.data.status === 'success' && response.data.data.user) {

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User as UserIcon, ArrowRight, KeyRound, CheckCircle, ShieldAlert } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { userActions } from '../store/slices/userSlice';
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -25,7 +26,7 @@ const AuthModal = ({ isOpen, onClose }) => {
       dispatch(userActions.loginRequest());
       try {
         const endpoint = mode === 'login' ? '/api/v1/users/login' : '/api/v1/users/signup';
-        const response = await axios.post(`http://localhost:5000${endpoint}`, formData, {
+        const response = await axios.post(`${API_BASE_URL}${endpoint}`, formData, {
           withCredentials: true
         });
         
@@ -39,7 +40,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     } else if (mode === 'forgot') {
       setLocalLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/api/v1/users/forgotPassword', {
+        const response = await axios.post(`${API_BASE_URL}/api/v1/users/forgotPassword`, {
           email: formData.email
         });
         setInfoMessage(response.data.message);
@@ -53,7 +54,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     } else if (mode === 'reset') {
       setLocalLoading(true);
       try {
-        const response = await axios.post(`http://localhost:5000/api/v1/users/resetPassword/${resetToken}`, {
+        const response = await axios.post(`${API_BASE_URL}/api/v1/users/resetPassword/${resetToken}`, {
           password: newPassword
         });
         setInfoMessage('Password reset successfully! You can now log in.');
@@ -266,7 +267,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                   <button
                     type="button"
-                    onClick={() => window.location.href = 'http://localhost:5000/auth/google'}
+                    onClick={() => window.location.href = `${API_BASE_URL}/auth/google`}
                     className="glass"
                     style={{
                       display: 'flex',

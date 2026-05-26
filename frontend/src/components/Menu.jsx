@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../store/slices/cartSlice';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -388,7 +389,7 @@ const Menu = () => {
     const fetchItems = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5000/api/v1/menu'
+          `${API_BASE_URL}/api/v1/menu`
         );
 
         const data = response.data.data;

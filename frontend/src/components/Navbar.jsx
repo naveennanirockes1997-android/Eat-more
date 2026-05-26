@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { ShoppingCart, User, Search, LogOut, LayoutDashboard, Settings } from 'lucide-react';
 import AuthModal from './AuthModal';
 import CartDrawer from './CartDrawer';
@@ -37,7 +38,7 @@ const Navbar = () => {
     }
     const handler = setTimeout(async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/menu', { withCredentials: true });
+        const res = await axios.get(`${API_BASE_URL}/api/v1/menu`, { withCredentials: true });
         const items = res.data.data;
         const filtered = items.filter(item =>
           item.itemName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -71,7 +72,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:5000/api/v1/users/logout', {
+      await axios.get(`${API_BASE_URL}/api/v1/users/logout`, {
         withCredentials: true
       });
     } catch (err) {

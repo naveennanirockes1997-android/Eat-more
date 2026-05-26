@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Package, Clock, CheckCircle, Truck, XCircle, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { API_BASE_URL } from '../config';
 
 const OrdersModal = ({ isOpen, onClose }) => {
   const [orders, setOrders] = useState([]);
@@ -15,7 +16,7 @@ const OrdersModal = ({ isOpen, onClose }) => {
     const fetchOrders = async () => {
       try {
         setLoading(true);
-        const res = await axios.get('http://localhost:5000/api/v1/orders/my-orders', { withCredentials: true });
+        const res = await axios.get(`${API_BASE_URL}/api/v1/orders/my-orders`, { withCredentials: true });
         setOrders(res.data.data);
       } catch (err) {
         setError('Failed to fetch orders. Please try again.');
@@ -27,7 +28,7 @@ const OrdersModal = ({ isOpen, onClose }) => {
     fetchOrders();
 
     // Connect to Socket.io for Real-Time Status Updates
-    const socket = io('http://localhost:5000', { withCredentials: true });
+    const socket = io(API_BASE_URL, { withCredentials: true });
     
     socket.on('orderStatusUpdated', (updatedOrder) => {
       // Update the specific order in our state with the fresh data from the admin
@@ -44,7 +45,7 @@ const OrdersModal = ({ isOpen, onClose }) => {
   const handleCancelOrder = async (orderId) => {
     if (!window.confirm('Are you sure you want to cancel this order?')) return;
     try {
-      const res = await axios.patch(`http://localhost:5000/api/v1/orders/${orderId}/cancel`, {}, { withCredentials: true });
+      const res = await axios.patch(`${API_BASE_URL}/api/v1/orders/${orderId}/cancel`, {}, { withCredentials: true });
       if (res.data.status === 'success') {
         setOrders(prev => prev.map(o => o._id === orderId ? { ...o, orderStatus: 'Cancelled' } : o));
       }

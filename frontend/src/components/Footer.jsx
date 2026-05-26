@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Footer = () => {
   const [contactInfo, setContactInfo] = useState({
@@ -13,7 +14,7 @@ const Footer = () => {
   useEffect(() => {
     const fetchContact = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/settings', { withCredentials: true });
+        const res = await axios.get(`${API_BASE_URL}/api/v1/settings`, { withCredentials: true });
         const data = res.data.data;
         setContactInfo({
           address: data.contactAddress || contactInfo.address,

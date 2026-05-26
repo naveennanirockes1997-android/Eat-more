@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, User, Mail, ShieldAlert, ArrowRight, Home, Lock, KeyRound, Sparkles } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { userActions } from '../store/slices/userSlice';
 
 const ProfileModal = ({ isOpen, onClose }) => {
@@ -51,7 +52,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
     try {
       const res = await axios.patch(
-        'http://localhost:5000/api/v1/users/updateMe',
+        `${API_BASE_URL}/api/v1/users/updateMe`,
         { name, email },
         { withCredentials: true }
       );
@@ -76,7 +77,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
     try {
       const res = await axios.patch(
-        'http://localhost:5000/api/v1/users/updateMe',
+        `${API_BASE_URL}/api/v1/users/updateMe`,
         { savedAddresses: [address] },
         { withCredentials: true }
       );
@@ -100,7 +101,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
 
     try {
       const res = await axios.patch(
-        'http://localhost:5000/api/v1/users/updateMyPassword',
+        `${API_BASE_URL}/api/v1/users/updateMyPassword`,
         passwordForm,
         { withCredentials: true }
       );

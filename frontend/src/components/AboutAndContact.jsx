@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { Send, CheckCircle, Star, User, Utensils, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -20,8 +21,8 @@ const AboutAndContact = () => {
   const fetchData = async () => {
     try {
       const [reviewsRes, menuRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/v1/messages'),
-        axios.get('http://localhost:5000/api/v1/menu')
+        axios.get(`${API_BASE_URL}/api/v1/messages`),
+        axios.get(`${API_BASE_URL}/api/v1/menu`)
       ]);
       setReviews(reviewsRes.data.data);
       setMenuItems(menuRes.data.data);
@@ -38,7 +39,7 @@ const AboutAndContact = () => {
     e.preventDefault();
     setStatus({ loading: true, success: false, error: '' });
     try {
-      await axios.post('http://localhost:5000/api/v1/messages', formData);
+      await axios.post(`${API_BASE_URL}/api/v1/messages`, formData);
       setStatus({ loading: false, success: true, error: '' });
       setFormData({ name: '', email: '', message: '', rating: 5, foodItem: '' });
       fetchData(); // Refresh reviews list

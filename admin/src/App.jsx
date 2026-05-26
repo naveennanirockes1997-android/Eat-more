@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, ShieldAlert, LogOut, ArrowRight, Sparkles, Loader, KeyRound } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 import { userActions } from './store/slices/userSlice';
 
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
@@ -39,7 +40,7 @@ const App = () => {
   useEffect(() => {
     const restoreSession = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/v1/users/me', {
+        const res = await axios.get(`${API_BASE_URL}/api/v1/users/me`, {
           withCredentials: true
         });
         if (res.data.status === 'success' && res.data.data.user) {
@@ -78,7 +79,7 @@ const App = () => {
     setSuccessMessage('');
     setIsLoggingIn(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/v1/users/forgotPassword', {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/users/forgotPassword`, {
         email: forgotEmail
       });
       if (response.data.status === 'success') {
@@ -101,7 +102,7 @@ const App = () => {
     setSuccessMessage('');
     setIsLoggingIn(true);
     try {
-      const response = await axios.post(`http://localhost:5000/api/v1/users/resetPassword/${resetToken}`, {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/users/resetPassword/${resetToken}`, {
         password: newPassword
       });
       if (response.data.status === 'success') {
@@ -125,7 +126,7 @@ const App = () => {
     dispatch(userActions.loginRequest());
 
     try {
-      const response = await axios.post('http://localhost:5000/api/v1/users/login', { email, password }, {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/users/login`, { email, password }, {
         withCredentials: true
       });
 
@@ -133,7 +134,7 @@ const App = () => {
 
       if (user.role !== 'admin' && user.role !== 'staff') {
         // Safe lock: logout immediately and reject unauthorized account
-        await axios.get('http://localhost:5000/api/v1/users/logout', { withCredentials: true });
+        await axios.get(`${API_BASE_URL}/api/v1/users/logout`, { withCredentials: true });
         dispatch(userActions.logout());
         setLocalError('Unauthorized access. This portal is strictly reserved for administrators.');
       } else {
@@ -152,7 +153,7 @@ const App = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:5000/api/v1/users/logout', { withCredentials: true });
+      await axios.get(`${API_BASE_URL}/api/v1/users/logout`, { withCredentials: true });
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
