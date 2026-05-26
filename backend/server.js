@@ -30,9 +30,23 @@ const allowedOrigins = [
   "http://localhost:5175"
 ];
 
+const corsOriginChecker = (origin, callback) => {
+  if (!origin) return callback(null, true);
+  
+  const isLocalhost = origin.includes('localhost') || origin.includes('127.0.0.1');
+  const isOnrender = origin.endsWith('.onrender.com');
+  const isConfigured = (process.env.CLIENT_URL && origin === process.env.CLIENT_URL);
+  
+  if (isLocalhost || isOnrender || isConfigured) {
+    callback(null, true);
+  } else {
+    callback(new Error('Not allowed by CORS'));
+  }
+};
+
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: corsOriginChecker,
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -44,7 +58,7 @@ app.set('socketio', io);
 const PORT = Number(process.env.PORT) || 5000;
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: corsOriginChecker,
   credentials: true
 }));
 app.use(express.json());
@@ -52,7 +66,18 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 // Google OAuth Root Routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google', (req, res, next) => {
+  const referer = req.headers.referer;
+  if (referer) {
+    res.cookie('auth_redirect_to', referer, {
+      maxAge: 5 * 60 * 1000, // 5 minutes
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    });
+  }
+  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
 app.get('/auth/google/callback', passport.authenticate('google', { session: false, failureRedirect: '/login' }), authController.googleOAuthSuccess);
 
 // Routes

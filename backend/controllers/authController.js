@@ -345,14 +345,33 @@ export const googleOAuthSuccess = (req, res) => {
       expires: new Date(Date.now() + (process.env.JWT_COOKIE_EXPIRES_IN || 90) * 24 * 60 * 60 * 1000),
       httpOnly: true,
     };
-    if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    if (process.env.NODE_ENV === 'production') {
+      cookieOptions.secure = true;
+      cookieOptions.sameSite = 'none';
+    }
 
     res.cookie('jwt', token, cookieOptions);
 
-    // Redirect to the frontend URL
-    res.redirect(process.env.CLIENT_URL || 'http://localhost:5173');
+    let redirectUrl = req.cookies.auth_redirect_to;
+    res.clearCookie('auth_redirect_to', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    });
+
+    if (!redirectUrl) {
+      redirectUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    }
+
+    res.redirect(redirectUrl);
   } catch (err) {
     console.error('Google OAuth Success Redirect Error:', err);
-    res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}?error=auth_failed`);
+    let redirectUrl = req.cookies.auth_redirect_to || process.env.CLIENT_URL || 'http://localhost:5173';
+    res.clearCookie('auth_redirect_to', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    });
+    res.redirect(`${redirectUrl}?error=auth_failed`);
   }
 };
