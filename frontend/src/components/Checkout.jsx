@@ -29,6 +29,19 @@ const Checkout = () => {
   const [isScheduled, setIsScheduled] = useState(false);
   const [scheduledDate, setScheduledDate] = useState('');
   const [scheduledTime, setScheduledTime] = useState('');
+  const [isCustomTime, setIsCustomTime] = useState(false);
+  const [customTimeValue, setCustomTimeValue] = useState('');
+
+  const formatTime12h = (time24) => {
+    if (!time24) return '';
+    const [hoursStr, minutesStr] = time24.split(':');
+    let hours = parseInt(hoursStr, 10);
+    const minutes = minutesStr;
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    return `${hours.toString().padStart(2, '0')}:${minutes} ${ampm}`;
+  };
 
   const getNext7Days = () => {
     const days = [];
@@ -296,7 +309,13 @@ const Checkout = () => {
             <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
               <button
                 type="button"
-                onClick={() => { setIsScheduled(false); setScheduledDate(''); setScheduledTime(''); }}
+                onClick={() => {
+                  setIsScheduled(false);
+                  setScheduledDate('');
+                  setScheduledTime('');
+                  setIsCustomTime(false);
+                  setCustomTimeValue('');
+                }}
                 style={{
                   flex: 1,
                   padding: '12px',
@@ -327,6 +346,8 @@ const Checkout = () => {
                   if (timeSlots.length > 0) {
                     setScheduledTime(timeSlots[0]);
                   }
+                  setIsCustomTime(false);
+                  setCustomTimeValue('');
                 }}
                 style={{
                   flex: 1,
@@ -395,14 +416,17 @@ const Checkout = () => {
                     {/* Time Slot Grid */}
                     <div>
                       <label style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Select Time Slot</label>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
                         {timeSlots.map((slot) => {
-                          const isSelected = scheduledTime === slot;
+                          const isSelected = !isCustomTime && scheduledTime === slot;
                           return (
                             <button
                               key={slot}
                               type="button"
-                              onClick={() => setScheduledTime(slot)}
+                              onClick={() => {
+                                setIsCustomTime(false);
+                                setScheduledTime(slot);
+                              }}
                               style={{
                                 padding: '12px 8px',
                                 borderRadius: '8px',
@@ -424,7 +448,78 @@ const Checkout = () => {
                             </button>
                           );
                         })}
+
+                        {/* Custom Time Selector Toggle Button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsCustomTime(true);
+                            if (customTimeValue) {
+                              setScheduledTime(formatTime12h(customTimeValue));
+                            } else {
+                              setScheduledTime('');
+                            }
+                          }}
+                          style={{
+                            padding: '12px 8px',
+                            borderRadius: '8px',
+                            border: isCustomTime ? '1px solid var(--primary)' : '1px solid var(--glass-border)',
+                            background: isCustomTime ? 'hsla(31, 95%, 55%, 0.15)' : 'rgba(255,255,255,0.02)',
+                            color: isCustomTime ? 'var(--primary)' : 'white',
+                            fontSize: '12px',
+                            fontWeight: isCustomTime ? 'bold' : 'normal',
+                            cursor: 'pointer',
+                            transition: '0.2s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            gridColumn: 'span 2'
+                          }}
+                        >
+                          <Clock size={14} style={{ opacity: 0.7 }} />
+                          {isCustomTime && customTimeValue ? `Custom: ${formatTime12h(customTimeValue)}` : 'Select Custom Time'}
+                        </button>
                       </div>
+
+                      {/* Custom Time Input field */}
+                      <AnimatePresence>
+                        {isCustomTime && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            style={{ overflow: 'hidden', marginTop: '12px' }}
+                          >
+                            <label style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '6px' }}>Choose custom booking time:</label>
+                            <input 
+                              type="time"
+                              value={customTimeValue}
+                              onChange={(e) => {
+                                const timeVal = e.target.value;
+                                setCustomTimeValue(timeVal);
+                                if (timeVal) {
+                                  setScheduledTime(formatTime12h(timeVal));
+                                } else {
+                                  setScheduledTime('');
+                                }
+                              }}
+                              required
+                              style={{
+                                width: '100%',
+                                padding: '12px',
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid var(--glass-border)',
+                                borderRadius: '8px',
+                                color: 'white',
+                                outline: 'none',
+                                colorScheme: 'dark'
+                              }}
+                            />
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </motion.div>

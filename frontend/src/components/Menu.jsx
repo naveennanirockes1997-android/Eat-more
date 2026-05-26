@@ -11,6 +11,8 @@ import {
   AlertCircle,
   ChevronLeft,
   ChevronRight,
+  CheckCircle,
+  ShoppingBag,
 } from 'lucide-react';
 
 import FoodDetailsModal from './FoodDetailsModal';
@@ -711,59 +713,113 @@ const Menu = () => {
         onAddToCart={addToCartHandler}
       />
 
-      {/* Toast */}
+      {/* Premium Dynamic Toast */}
       <AnimatePresence>
-        {toast && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: -100,
-              scale: 0.8,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            exit={{
-              opacity: 0,
-              y: -100,
-              scale: 0.8,
-            }}
-            style={{
-              position: 'fixed',
-              top: '30px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              background:
-                'rgba(255,75,75,0.9)',
-              color: 'white',
-              padding: '16px 32px',
-              borderRadius: '16px',
-              zIndex: 5000,
-              minWidth: '320px',
-            }}
-          >
-            <div
+        {toast && (() => {
+          const isObject = typeof toast === 'object' && toast !== null;
+          const msg = isObject ? toast.message : toast;
+          const isWarning = isObject 
+            ? toast.type === 'warning' 
+            : (msg.toLowerCase().includes('login') || msg.toLowerCase().includes('error') || msg.toLowerCase().includes('fail'));
+          
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: -50, scale: 0.9, x: '-50%' }}
+              animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
+              exit={{ opacity: 0, y: -20, scale: 0.95, x: '-50%' }}
+              transition={{ type: 'spring', stiffness: 350, damping: 25 }}
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
+                position: 'fixed',
+                top: '40px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                zIndex: 9999,
+                width: '90%',
+                maxWidth: '400px',
               }}
             >
-              <AlertCircle size={24} />
-
               <div
                 style={{
-                  fontWeight: '600',
-                  fontSize: '15px',
+                  background: isWarning 
+                    ? 'rgba(239, 68, 68, 0.12)' 
+                    : 'rgba(16, 185, 129, 0.12)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: isWarning
+                    ? '1px solid rgba(239, 68, 68, 0.25)'
+                    : '1px solid rgba(16, 185, 129, 0.25)',
+                  borderRadius: '16px',
+                  padding: '16px 20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  boxShadow: isWarning
+                    ? '0 10px 30px -5px rgba(239, 68, 68, 0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
+                    : '0 10px 30px -5px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
+                  color: 'white',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
-                {toast}
+                {/* Left Color Accent Pill */}
+                <div style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: '6px',
+                  background: isWarning ? '#ef4444' : '#10b981'
+                }} />
+
+                {/* Icon wrapper */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '50%',
+                  background: isWarning ? 'rgba(239, 68, 68, 0.15)' : 'rgba(16, 185, 129, 0.15)',
+                  color: isWarning ? '#f87171' : '#34d399',
+                  flexShrink: 0
+                }}>
+                  {isWarning ? <AlertCircle size={20} /> : <ShoppingBag size={20} />}
+                </div>
+
+                {/* Msg text */}
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ 
+                    margin: '0 0 2px 0', 
+                    fontSize: '14px', 
+                    fontWeight: '700',
+                    color: isWarning ? '#f87171' : '#34d399',
+                    letterSpacing: '0.3px'
+                  }}>
+                    {isWarning ? 'System Notification' : 'Success'}
+                  </h4>
+                  <p style={{ margin: 0, fontSize: '13px', color: 'rgba(255,255,255,0.9)', lineHeight: '1.4', fontWeight: '500' }}>
+                    {msg}
+                  </p>
+                </div>
+
+                {/* Countdown progress line */}
+                <motion.div
+                  initial={{ width: '100%' }}
+                  animate={{ width: 0 }}
+                  transition={{ duration: 3, ease: 'linear' }}
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    height: '3px',
+                    background: isWarning ? '#ef4444' : '#10b981',
+                    opacity: 0.7
+                  }}
+                />
               </div>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
     </section>
   );

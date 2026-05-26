@@ -8,7 +8,11 @@ dotenv.config();
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID ? process.env.GOOGLE_CLIENT_ID.trim() : '',
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ? process.env.GOOGLE_CLIENT_SECRET.trim() : '',
-    callbackURL: "https://eat-more-backend-jpjz.onrender.com/auth/google/callback",
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || (
+      process.env.NODE_ENV === 'production'
+        ? "https://eat-more-backend-jpjz.onrender.com/auth/google/callback"
+        : "http://localhost:5000/auth/google/callback"
+    ),
     proxy: true
   },
   async (accessToken, refreshToken, profile, cb) => {
