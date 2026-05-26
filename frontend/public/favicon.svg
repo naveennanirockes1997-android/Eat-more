@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff7e47" />
+      <stop offset="100%" stop-color="#eb5e28" />
+    </linearGradient>
+    <!-- Shadow Filter -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+  </defs>
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" />
+  <!-- Cloche / Plate Icon -->
+  <g filter="url(#dropShadow)">
+    <!-- Food Plate (Base) -->
+    <rect x="136" y="320" width="240" height="20" rx="10" fill="#ffffff" />
+    <!-- Dome Cover -->
+    <path d="M156 300 C156 190, 356 190, 356 300 Z" fill="#ffffff" opacity="0.9" />
+    <!-- Handle Ring -->
+    <circle cx="256" cy="180" r="16" stroke="#ffffff" stroke-width="8" fill="none" />
+    <!-- Elegant Sparkle Stars -->
+    <path d="M180 150 L184 158 L192 160 L184 162 L180 170 L176 162 L168 160 L176 158 Z" fill="#ffffff" opacity="0.8" />
+    <path d="M330 160 L333 166 L340 168 L333 170 L330 176 L327 170 L320 168 L327 166 Z" fill="#ffffff" opacity="0.8" />
+  </g>
+</svg>
