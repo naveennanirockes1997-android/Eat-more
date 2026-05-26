@@ -72,14 +72,15 @@ const AuthModal = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div style={{
+        <div className="modal-overlay" style={{
           position: 'fixed',
           inset: 0,
           zIndex: 2000,
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           justifyContent: 'center',
-          padding: '20px'
+          padding: '40px 20px',
+          overflowY: 'auto'
         }}>
           <motion.div 
             initial={{ opacity: 0 }}
@@ -90,7 +91,8 @@ const AuthModal = ({ isOpen, onClose }) => {
               position: 'absolute',
               inset: 0,
               background: 'rgba(0,0,0,0.8)',
-              backdropFilter: 'blur(8px)'
+              backdropFilter: 'blur(8px)',
+              zIndex: 2000
             }}
           />
           
@@ -98,17 +100,19 @@ const AuthModal = ({ isOpen, onClose }) => {
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="glass"
+            className="glass modal-card"
             style={{
               width: '100%',
               maxWidth: '450px',
-              padding: '40px',
+              padding: '40px 30px',
               position: 'relative',
-              zIndex: 2001
+              zIndex: 2001,
+              margin: 'auto 0'
             }}
           >
             <button 
               onClick={onClose}
+              className="modal-close-btn"
               style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', color: 'var(--text-muted)', border: 'none', cursor: 'pointer' }}
             >
               <X size={24} />

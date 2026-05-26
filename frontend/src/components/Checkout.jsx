@@ -210,10 +210,10 @@ const Checkout = () => {
   }
 
   return (
-    <div style={{ padding: '120px 24px 40px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="checkout-container" style={{ padding: '120px 24px 40px', maxWidth: '1000px', margin: '0 auto' }}>
       <h1 style={{ fontSize: '32px', marginBottom: '40px' }}>Secure <span className="text-gradient">Checkout</span></h1>
       
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
+      <div className="checkout-layout-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '40px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
           {/* Shipping Section */}
@@ -254,7 +254,7 @@ const Checkout = () => {
                         style={{ width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white', marginTop: '4px' }}
                       />
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div className="address-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                       <div>
                         <label style={{ fontSize: '12px', color: 'var(--text-muted)' }}>City</label>
                         <input 
@@ -382,7 +382,7 @@ const Checkout = () => {
                     {/* Date Selector Grid */}
                     <div>
                       <label style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Select Date</label>
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+                      <div className="checkout-date-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
                         {getNext7Days().map((day) => {
                           const isSelected = scheduledDate === day.value;
                           return (
@@ -416,7 +416,7 @@ const Checkout = () => {
                     {/* Time Slot Grid */}
                     <div>
                       <label style={{ fontSize: '13px', color: 'var(--text-muted)', display: 'block', marginBottom: '8px' }}>Select Time Slot</label>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
+                      <div className="checkout-time-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '12px' }}>
                         {timeSlots.map((slot) => {
                           const isSelected = !isCustomTime && scheduledTime === slot;
                           return (
@@ -569,7 +569,7 @@ const Checkout = () => {
                       style={{ width: '100%', padding: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'white', marginTop: '4px', outline: 'none' }}
                     />
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="stripe-expiry-cvc-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                     <div>
                       <label style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Expiration</label>
                       <input 

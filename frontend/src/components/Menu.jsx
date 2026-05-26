@@ -570,6 +570,7 @@ const Menu = () => {
 
         {/* Filters */}
         <div
+          className="filters-container"
           style={{
             display: 'flex',
             justifyContent: 'space-between',
@@ -580,6 +581,7 @@ const Menu = () => {
         >
           {/* Categories */}
           <div
+            className="categories-list"
             style={{
               display: 'flex',
               gap: '12px',

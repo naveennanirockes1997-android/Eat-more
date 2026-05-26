@@ -113,7 +113,7 @@ const AboutAndContact = () => {
       {/* Review Form Section */}
       <motion.div 
         initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-        className="glass" style={{ padding: '40px', borderRadius: '24px', width: '100%', maxWidth: '800px', margin: '0 auto' }}
+        className="glass review-form-card" style={{ padding: '40px', borderRadius: '24px', width: '100%', maxWidth: '800px', margin: '0 auto' }}
       >
         <div style={{ margin: '0 auto' }}>
           <h2 style={{ fontSize: '32px', marginBottom: '8px', textAlign: 'center' }}><span className="text-gradient">Give your review</span> on food item</h2>
@@ -133,7 +133,7 @@ const AboutAndContact = () => {
                 </div>
               )}
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+              <div className="form-grid-2-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 <input 
                   type="text" 
                   placeholder="Your Name" 
@@ -152,7 +152,7 @@ const AboutAndContact = () => {
                 />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'center' }}>
+              <div className="form-grid-2-col-align" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', alignItems: 'center' }}>
                 {/* Select Food Item */}
                 <div style={{ position: 'relative', width: '100%' }}>
                   <Utensils size={18} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />

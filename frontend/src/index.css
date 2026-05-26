@@ -127,3 +127,219 @@ button {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ==========================================================================
+   Responsive Media Queries & Mobile Optimizations
+   ========================================================================== */
+
+/* Under 1024px: Laptops & Tablets */
+@media (max-width: 1024px) {
+  /* Navbar responsiveness */
+  .navbar-container {
+    width: 95% !important;
+    padding: 12px 20px !important;
+    top: 10px !important;
+  }
+  .navbar-links {
+    display: none !important;
+  }
+  .navbar-search {
+    display: none !important;
+  }
+  .navbar-user-profile {
+    display: none !important;
+  }
+  .navbar-login-btn {
+    display: none !important;
+  }
+  .navbar-logout-btn {
+    display: none !important;
+  }
+  .navbar-hamburger {
+    display: flex !important;
+  }
+}
+
+/* Under 768px: Mobile Devices */
+@media (max-width: 768px) {
+  /* Adjust global spacing */
+  .container {
+    padding: 0 16px !important;
+  }
+  
+  /* PromoCarousel overrides */
+  .glass[style*="height: 400px"],
+  .promo-carousel-container {
+    height: 300px !important;
+  }
+  .glass h2[style*="font-size: 60px"],
+  .promo-title {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 8px !important;
+  }
+  .glass p[style*="font-size: 24px"],
+  .promo-subtitle {
+    font-size: 16px !important;
+    margin-bottom: 16px !important;
+  }
+  .glass [style*="gap: 20px"] {
+    gap: 10px !important;
+  }
+  /* Hide Promo carousel navigation arrows on small screens to prevent overlap */
+  .glass button[style*="left: 20px"],
+  .glass button[style*="right: 20px"] {
+    display: none !important;
+  }
+  
+  /* Hero section adjust */
+  div[style*="padding: 80px 24px 60px"] {
+    padding: 60px 16px 40px !important;
+    text-align: center !important;
+  }
+  div[style*="font-size: 64px"] {
+    font-size: 36px !important;
+    line-height: 1.2 !important;
+  }
+  div[style*="font-size: 20px"] {
+    font-size: 15px !important;
+  }
+  
+  /* Menu page category selector bar: Horizontally Scrollable on Mobile! */
+  .categories-list {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 4px 8px 12px !important;
+    margin-bottom: 8px !important;
+    width: 100vw !important;
+    margin-left: -16px !important;
+    padding-left: 16px !important;
+    scrollbar-width: none !important; /* Hide scrollbar Firefox */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .categories-list::-webkit-scrollbar {
+    display: none !important; /* Hide scrollbar Safari/Chrome */
+  }
+  
+  .categories-list button {
+    flex: 0 0 auto !important;
+    padding: 8px 18px !important;
+    font-size: 13px !important;
+  }
+
+  .filters-container {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+  
+  .filters-container > div[style*="gap: 16px"] {
+    justify-content: space-between !important;
+    width: 100% !important;
+  }
+  
+  /* Review Form & Grid in About & Contact */
+  .review-form-card {
+    padding: 24px 16px !important;
+    border-radius: 16px !important;
+  }
+  .review-form-card h2 {
+    font-size: 24px !important;
+  }
+  .form-grid-2-col,
+  .form-grid-2-col-align {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* Metrics Grid in About */
+  div[style*="gridTemplateColumns: 'repeat(4, 1fr)'"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* Checkout page */
+  .checkout-container {
+    padding: 90px 16px 24px !important;
+  }
+  .checkout-container h1 {
+    font-size: 26px !important;
+    margin-bottom: 20px !important;
+  }
+  .checkout-layout-grid {
+    gap: 24px !important;
+  }
+  .address-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .checkout-date-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .checkout-time-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stripe-expiry-cvc-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Responsive Modal overlays */
+  .modal-overlay {
+    padding: 20px 10px !important;
+  }
+  .modal-card {
+    padding: 30px 20px !important;
+    border-radius: 16px !important;
+  }
+  .modal-card h2 {
+    font-size: 24px !important;
+    margin-bottom: 4px !important;
+  }
+  .modal-card p {
+    margin-bottom: 20px !important;
+  }
+  .modal-card form {
+    gap: 12px !important;
+  }
+  
+  /* Footer responsive spacing */
+  footer {
+    margin: 40px 16px 16px !important;
+    padding: 40px 20px !important;
+    border-radius: 16px !important;
+  }
+  footer div[style*="display: 'grid'"] {
+    gap: 30px !important;
+  }
+  footer div[style*="display: 'flex', justifyContent: 'space-between'"] {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+}
+
+/* Under 480px: Small Screen Optimization */
+@media (max-width: 480px) {
+  /* Logo text shrink */
+  .navbar-container h2,
+  .navbar-container h3 {
+    font-size: 18px !important;
+  }
+  
+  /* Carousel adjustment for extra small viewports */
+  .glass[style*="height: 400px"] {
+    height: 250px !important;
+  }
+  .glass h2[style*="font-size: 60px"] {
+    font-size: 24px !important;
+  }
+  
+  /* Grid sizes for food cards */
+  div[style*="gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))'"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
