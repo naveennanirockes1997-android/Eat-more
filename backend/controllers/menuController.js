@@ -4,13 +4,15 @@ import FoodItem from '../models/foodModel.js';
 // Get baseline categories helper function
 const getCategory = (itemName) => {
   const name = itemName.toLowerCase();
-  if (name.includes('biryani') || name.includes('pulav') || name.includes('rice')) return 'Rice & Biryani';
-  if (name.includes('kebab') || name.includes('tikka') || name.includes('fry') || name.includes('grilled')) return 'Starters & Grills';
-  if (name.includes('curry') || name.includes('makhani') || name.includes('masala') || name.includes('korma') || name.includes('jhol') || name.includes('mangsho')) return 'Main Course';
-  if (name.includes('dessert') || name.includes('sweet') || name.includes('baklava') || name.includes('jamun') || name.includes('ghevar') || name.includes('doi') || name.includes('kulfi')) return 'Desserts';
-  if (name.includes('coffee') || name.includes('lassi') || name.includes('brew') || name.includes('drink')) return 'Beverages';
-  if (name.includes('pizza') || name.includes('pasta') || name.includes('burger')) return 'Fast Food';
-  return 'Other Delicacies';
+  const rules = [
+    { keys: ['biryani', 'pulav', 'rice'], cat: 'Rice & Biryani' },
+    { keys: ['kebab', 'tikka', 'fry', 'grilled'], cat: 'Starters & Grills' },
+    { keys: ['curry', 'makhani', 'masala', 'korma', 'jhol', 'mangsho'], cat: 'Main Course' },
+    { keys: ['dessert', 'sweet', 'baklava', 'jamun', 'ghevar', 'doi', 'kulfi'], cat: 'Desserts' },
+    { keys: ['coffee', 'lassi', 'brew', 'drink'], cat: 'Beverages' },
+    { keys: ['pizza', 'pasta', 'burger'], cat: 'Fast Food' }
+  ];
+  return rules.find(r => r.keys.some(k => name.includes(k)))?.cat || 'Other Delicacies';
 };
 
 // 1. Get all menu items (with auto-seeding if empty)

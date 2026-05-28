@@ -17,6 +17,37 @@ import {
 
 import FoodDetailsModal from './FoodDetailsModal';
 
+const MenuSkeleton = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+    {[1, 2].map((catIndex) => (
+      <div key={catIndex} style={{ marginBottom: '50px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div className="skeleton-shimmer" style={{ height: '32px', width: '200px', borderRadius: '8px' }} />
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="skeleton-shimmer" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+            <div className="skeleton-shimmer" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+          </div>
+        </div>
+        <div className="hide-scrollbar" style={{ display: 'flex', gap: '24px', overflowX: 'auto', paddingBottom: '20px' }}>
+          {[1, 2, 3, 4].map((cardIndex) => (
+            <div key={cardIndex} className="skeleton-card">
+              <div className="skeleton-image skeleton-shimmer" />
+              <div className="skeleton-content">
+                <div className="skeleton-title-row">
+                  <div className="skeleton-title skeleton-shimmer" />
+                  <div className="skeleton-price skeleton-shimmer" />
+                </div>
+                <div className="skeleton-desc skeleton-shimmer" />
+                <div className="skeleton-btn skeleton-shimmer" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const CategoryCarousel = ({
   category,
   items,
@@ -281,58 +312,15 @@ const Menu = () => {
 
   const getCategory = (item) => {
     const name = item.itemName.toLowerCase();
-
-    if (
-      name.includes('biryani') ||
-      name.includes('pulav') ||
-      name.includes('rice')
-    ) {
-      return 'Rice & Biryani';
-    }
-
-    if (
-      name.includes('kebab') ||
-      name.includes('tikka') ||
-      name.includes('fry') ||
-      name.includes('grilled')
-    ) {
-      return 'Starters & Grills';
-    }
-
-    if (
-      name.includes('curry') ||
-      name.includes('makhani') ||
-      name.includes('masala') ||
-      name.includes('korma')
-    ) {
-      return 'Main Course';
-    }
-
-    if (
-      name.includes('dessert') ||
-      name.includes('sweet') ||
-      name.includes('kulfi')
-    ) {
-      return 'Desserts';
-    }
-
-    if (
-      name.includes('coffee') ||
-      name.includes('lassi') ||
-      name.includes('drink')
-    ) {
-      return 'Beverages';
-    }
-
-    if (
-      name.includes('pizza') ||
-      name.includes('burger') ||
-      name.includes('pasta')
-    ) {
-      return 'Fast Food';
-    }
-
-    return 'Other Delicacies';
+    const rules = [
+      { keys: ['biryani', 'pulav', 'rice'], cat: 'Rice & Biryani' },
+      { keys: ['kebab', 'tikka', 'fry', 'grilled'], cat: 'Starters & Grills' },
+      { keys: ['curry', 'makhani', 'masala', 'korma'], cat: 'Main Course' },
+      { keys: ['dessert', 'sweet', 'kulfi'], cat: 'Desserts' },
+      { keys: ['coffee', 'lassi', 'drink'], cat: 'Beverages' },
+      { keys: ['pizza', 'burger', 'pasta'], cat: 'Fast Food' }
+    ];
+    return rules.find(r => r.keys.some(k => name.includes(k)))?.cat || 'Other Delicacies';
   };
 
   /* =========================
@@ -496,43 +484,15 @@ const Menu = () => {
   };
 
   /* =========================
-      LOADING
-  ========================== */
-
-  if (loading) {
-    return (
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '100px',
-        }}
-      >
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
-
-  /* =========================
       SORTING
   ========================== */
 
-  const getSortedItems = (itemsList) => {
-    return [...itemsList].sort((a, b) => {
-      if (sortOption === 'top-rated') {
-        return b.rating - a.rating;
-      }
-
-      if (sortOption === 'price-low-high') {
-        return a.itemPrice - b.itemPrice;
-      }
-
-      if (sortOption === 'price-high-low') {
-        return b.itemPrice - a.itemPrice;
-      }
-
-      return 0;
-    });
-  };
+  const getSortedItems = (itemsList) => 
+    [...itemsList].sort((a, b) => 
+      sortOption === 'top-rated' ? b.rating - a.rating :
+      sortOption === 'price-low-high' ? a.itemPrice - b.itemPrice :
+      sortOption === 'price-high-low' ? b.itemPrice - a.itemPrice : 0
+    );
 
   return (
     <section
@@ -588,32 +548,46 @@ const Menu = () => {
               flexWrap: 'wrap',
             }}
           >
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() =>
-                  handleCategoryChange(cat)
-                }
-                className="glass"
-                style={{
-                  padding: '10px 24px',
-                  borderRadius: '30px',
-                  background:
-                    selectedCategory === cat
-                      ? 'var(--primary)'
-                      : 'var(--glass)',
-                  color:
-                    selectedCategory === cat
-                      ? 'white'
-                      : 'var(--text)',
-                  border: 'none',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                }}
-              >
-                {cat}
-              </button>
-            ))}
+            {loading ? (
+              [1, 2, 3, 4, 5].map((i) => (
+                <div
+                  key={i}
+                  className="skeleton-shimmer"
+                  style={{
+                    width: i === 1 ? '60px' : i === 2 ? '110px' : i === 3 ? '90px' : i === 4 ? '80px' : '95px',
+                    height: '38px',
+                    borderRadius: '30px',
+                  }}
+                />
+              ))
+            ) : (
+              categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() =>
+                    handleCategoryChange(cat)
+                  }
+                  className="glass"
+                  style={{
+                    padding: '10px 24px',
+                    borderRadius: '30px',
+                    background:
+                      selectedCategory === cat
+                        ? 'var(--primary)'
+                        : 'var(--glass)',
+                    color:
+                      selectedCategory === cat
+                        ? 'white'
+                        : 'var(--text)',
+                    border: 'none',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {cat}
+                </button>
+              ))
+            )}
           </div>
 
           {/* Sorting */}
@@ -670,7 +644,9 @@ const Menu = () => {
 
       {/* Menu */}
       <div>
-        {selectedCategory === 'All' ? (
+        {loading ? (
+          <MenuSkeleton />
+        ) : selectedCategory === 'All' ? (
           categories
             .filter((c) => c !== 'All')
             .map((category) => {

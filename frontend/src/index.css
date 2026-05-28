@@ -343,3 +343,153 @@ button {
   }
 }
 
+/* ==========================================================================
+   Shimmer & Skeleton Loader Styles
+   ========================================================================== */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 37%,
+    rgba(255, 255, 255, 0.03) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-card {
+  min-width: 300px;
+  max-width: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  flex-shrink: 0;
+}
+
+.skeleton-image {
+  height: 220px;
+  width: 100%;
+}
+
+.skeleton-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 60%;
+  border-radius: 4px;
+}
+
+.skeleton-price {
+  height: 20px;
+  width: 20%;
+  border-radius: 4px;
+}
+
+.skeleton-desc {
+  height: 38px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.skeleton-btn {
+  height: 42px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* Orders Skeleton Loading */
+.skeleton-order-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.skeleton-order-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 60%;
+}
+
+.skeleton-order-id {
+  height: 14px;
+  width: 50%;
+  border-radius: 3px;
+}
+
+.skeleton-order-date {
+  height: 12px;
+  width: 75%;
+  border-radius: 3px;
+}
+
+.skeleton-order-status {
+  height: 28px;
+  width: 100px;
+  border-radius: 20px;
+}
+
+.skeleton-order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-order-item {
+  height: 14px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.skeleton-order-footer {
+  border-top: 1px dashed var(--glass-border);
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-order-total-label {
+  height: 14px;
+  width: 80px;
+  border-radius: 3px;
+}
+
+.skeleton-order-total-price {
+  height: 24px;
+  width: 70px;
+  border-radius: 4px;
+}
+
+

@@ -89,7 +89,27 @@ const OrdersModal = ({ isOpen, onClose }) => {
 
             <div className="hide-scrollbar" style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {loading ? (
-                <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px' }}>Loading your orders...</div>
+                [1, 2, 3].map((i) => (
+                  <div key={i} className="skeleton-order-card">
+                    <div className="skeleton-order-header">
+                      <div className="skeleton-order-info">
+                        <div className="skeleton-order-id skeleton-shimmer" />
+                        <div className="skeleton-order-date skeleton-shimmer" style={{ marginTop: '6px' }} />
+                      </div>
+                      <div className="skeleton-order-status skeleton-shimmer" />
+                    </div>
+                    
+                    <div className="skeleton-order-items" style={{ margin: '8px 0' }}>
+                      <div className="skeleton-order-item skeleton-shimmer" style={{ width: '80%' }} />
+                      <div className="skeleton-order-item skeleton-shimmer" style={{ width: '60%' }} />
+                    </div>
+                    
+                    <div className="skeleton-order-footer">
+                      <div className="skeleton-order-total-label skeleton-shimmer" />
+                      <div className="skeleton-order-total-price skeleton-shimmer" />
+                    </div>
+                  </div>
+                ))
               ) : error ? (
                 <div style={{ textAlign: 'center', color: '#f87171', padding: '40px' }}>{error}</div>
               ) : orders.length === 0 ? (
